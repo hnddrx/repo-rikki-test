@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="update_info_form_view" model="ir.ui.view">
+        <field name="name">update.info.form</field>
+        <field name="model">update.info</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Submit" name="action_confirm" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="status" string="Request Status" widget="badge" invisible="1"
+                               decoration-info="status == 'submitted'"
+                               decoration-warning="status == 'reject'" decoration-success="status == 'approved'"/>
+                    </group>
+                    <group name="default_view">
+                        <group name="default_view_left">
+                            <field name="employee_id"/>
+                            <field name="department_id" readonly="True" force_save="True"/>
+                        </group>
+                        <group name="default_view_right">
+                            <field name="company_id" readonly="True" force_save="True"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reason"/>
+                    </group>
+                    <field name="update_detail" readonly="status != 'draft'">
+                        <tree string="Update Detail" editable="bottom">
+                            <field name="field_id" required="True"/>
+                            <field name="old_value" readonly="True" force_save="True"/>
+                            <field name="new_value"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="update_info_tree_view" model="ir.ui.view">
+        <field name="name">update.info.tree</field>
+        <field name="model">update.info</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="update_info_action" model="ir.actions.act_window">
+        <field name="name">Employee Info Update</field>
+        <field name="res_model">update.info</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Use this interface to log and manage all information update records. Click "New" to create a new entry.
+            </p>
+        </field>        
+    </record>
+
+    <menuitem
+        id="menu_update_info_action"
+        name="Employee Info Update"
+        action="update_info_action"
+        sequence="25"
+        web_icon="employee_info_update,static/src/description/updated.png"/>
+
+</odoo>

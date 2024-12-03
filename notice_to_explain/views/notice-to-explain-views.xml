@@ -1,0 +1,85 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_notice_to_explain_form" model="ir.ui.view">
+        <field name="name">notice.to.explain.form</field>
+        <field name="model">notice.to.explain</field>
+        <field name="arch" type="xml">
+            <form string="Notice to Explain">
+                <header>
+                    <button name="action_submit" type="object" string="Submit" 
+                    invisible="status != 'draft'"/>
+                    <button name="action_reset_draft" type="object" string="Reset to Draft" invisible="status != 'submitted'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="status" readonly="1"/>
+                            <field name="incident_report"/>
+                            <field name="employee"/>
+                        </group>
+                        <group>
+                            <field name="attachment_ids" widget="many2many_binary" options="{'no_create': True}"/> 
+                            <field name="remarks"/>
+                            
+                        </group>
+                    </group>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="notice_to_explain_tree_view" model="ir.ui.view">
+        <field name="name">notice.to.explain.tree</field>
+        <field name="model">notice.to.explain</field>
+        <field name="arch" type="xml">
+            <tree string="Notice to Explain">
+                <field name="doc_name" />
+                <field name="incident_report" />
+                <field name="employee"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="notice_to_explain_kanban_view" model="ir.ui.view">
+        <field name="name">notice.to.explain.kanban</field>
+        <field name="model">notice.to.explain</field>
+        <field name="arch" type="xml">
+            <kanban class="notice_to_explain_kanban">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="o_kanban_card oe_kanban_global_click_edit custom-flex">
+                            <div class="o_kanban_info">
+                                <div><strong>Document Name:</strong> <field name="doc_name" widget='car'/></div>
+                                <div><strong>Incident Report:</strong> <field name="incident_report" widget='many2one' options="{'no_open': True}"/></div>
+                                <div><strong>Employee:</strong> <field name="employee" widget='many2one' options="{'no_open': True}"/></div>
+                                <div><strong>Employee Name:</strong> <field name="employee_name" widget='char'/></div>
+                            </div>
+                        </div>                                 
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="notice_to_explain_action" model="ir.actions.act_window">
+        <field name="name">Notice to Explain</field>
+        <field name="res_model">notice.to.explain</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Use this interface to log and manage all Notice to Explain records. Click "New" to create a new entry.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_notice_to_explain" name="Notice to Explain" action="notice_to_explain_action" sequence="10" web_icon="notice_to_explain,static/src/image/warning.png" />
+</odoo>

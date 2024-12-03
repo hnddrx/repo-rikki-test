@@ -1,0 +1,109 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_incident_report_form" model="ir.ui.view">
+        <field name="name">incident.report.form</field>
+        <field name="model">incident.report</field>
+        <field name="arch" type="xml">
+            <form string="Incident Report">
+                <sheet>
+                    <group>
+                        <group string="Incident Details" colspan="2">
+                            <field name="doc_name" invisible="1"/>
+                            <field name="incident_location" string="Location"/>
+                            <field name="damage_done" string="Damage Details"/>
+                            <field name="offense" string="Offense Type"/>
+                            <field name="offense_description" string="Offense Description"/>
+                        </group>
+                        <group string="Date and Time">
+                            <field name="posting_date" string="Posting Date"/>
+                            <field name="date_and_time_of_offense" string="Offense Date &amp; Time"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="details_of_violation" placeholder="Describe the violation in detail..."/>
+                    </group>
+                    <notebook>
+                        <page string="Involved Employees" tooltip="List of employees involved in the incident">
+                            <field name="involved_employees">
+                                <tree editable="bottom" string="Involved Employees">
+                                    <field name="employee" string="Employee ID"/>
+                                    <field name="employee_name" string="Employee Name"/>
+                                    <field name="involvement" string="Involvement"/>
+                                    <field name="department" string="Department"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Attachments" tooltip="Upload relevant files or images">
+                            <field name="attachment_ids" widget="many2many_binary" options="{'no_create': True}" string="Attached Files"/> 
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <!-- Chatter for Messaging and Follower Management -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View for Incident Report -->
+    <record id="incident_report_tree_view" model="ir.ui.view">
+        <field name="name">incident.report.tree</field>
+        <field name="model">incident.report</field>
+        <field name="arch" type="xml">
+            <tree string="Incident Reports">
+                <field name="doc_name" string="Document"/>
+                <field name="posting_date" string="Posting Date"/>
+                <field name="date_and_time_of_offense" string="Offense Date &amp; Time"/>
+                <field name="incident_location" string="Location"/>
+                <field name="offense" string="Offense Type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Tree View for Involved Employees -->
+    <record id="view_involved_employees_tree" model="ir.ui.view">
+        <field name="name">involved.employees.tree</field>
+        <field name="model">involved.employees</field>
+        <field name="arch" type="xml">
+            <tree string="Involved Employees">
+                <field name="employee" string="Employee ID"/>
+                <field name="employee_name" string="Name"/>
+                <field name="involvement" string="Involvement Type"/>
+                <field name="department" string="Department"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action to Open the Incident Report Views -->
+    <record id="incident_report_action" model="ir.actions.act_window">
+        <field name="name">Incident Report</field>
+        <field name="res_model">incident.report</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="incident_report_tree_view"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+               Use this interface to log and manage all Incident Report records. Click "New" to create a new entry.
+            </p>
+        </field>
+    </record>
+
+    <!-- Main Menu Item for Incident Reports -->
+    <menuitem id="menu_incident_root" 
+        name="Incident Report" 
+        action="incident_report_action" 
+        sequence="10" 
+        web_icon="incident_report,static/src/image/report.png"/>
+    
+
+    <menuitem id="menu_offense_list" 
+        parent="menu_incident_root" 
+        name="Offense List" 
+        action="offense_list.offense_lists_action"
+        sequence="60"
+        />
+
+
+</odoo>
